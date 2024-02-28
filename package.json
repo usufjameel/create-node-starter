@@ -1,11 +1,12 @@
 {
   "name": "@usufjameel/create-node-app",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "This is a starter project for NodeJS ExpressJS application in Javascript",
   "main": "app.js",
   "bin": "./bin/cli.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "node playground.js"
   },
   "author": "Yusuf Jameel",
   "license": "ISC",

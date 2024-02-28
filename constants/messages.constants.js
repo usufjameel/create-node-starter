@@ -8,5 +8,8 @@ exports.message = {
   userUpdate: " User update successfully",
   requestMethodError: "Invalid Request method",
   noRecords: "Records not found",
+  missingFields: "Request has missing required fields",
+  noUpdateFields: "Nothing to update.",
+  noUniqueId: "Please provide record id.",
   unauthorized: "Unauthorized to perform this action.",
 };

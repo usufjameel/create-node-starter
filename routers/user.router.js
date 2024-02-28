@@ -28,7 +28,7 @@ exports.routes = [
   {
     method: RequestMethod.post,
     endpoint: Endpoints.users,
-    handlers: [controller.updateUser],
+    handlers: [verifyToken, controller.updateUser],
   },
   {
     method: RequestMethod.post,
