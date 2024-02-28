@@ -1,12 +1,12 @@
 {
-  "name": "starter-project",
-  "version": "1.0.0",
+  "name": "create-node-app",
+  "version": "1.0.5",
   "description": "This is a starter project for NodeJS ExpressJS application in Javascript",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
-  "author": "Mohammad Adnan",
+  "author": "Yusuf Jameel",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
