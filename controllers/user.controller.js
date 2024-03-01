@@ -157,15 +157,15 @@ exports.addUser = async (req, res) => {
   }
 
   const validObject = getObjectWithValidFields(jsonData, validFields);
-
   userdb
     .addUser(validObject, jsonData.email)
     .then((response) => {
       res
-        .status(status.success)
-        .send(rs(status.success, message.addUserSuccess));
+        .status(status.createdSuccess)
+        .send(rs(status.createdSuccess, message.addUserSuccess));
     })
     .catch((error) => {
+      console.log(error);
       res
         .status(status.failure)
         .send(rs(status.failure, message.addUserError, error));
