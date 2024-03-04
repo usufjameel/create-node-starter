@@ -1,8 +1,8 @@
-const { SelectType } = require("../constants");
+const { SelectType } = require('../constants');
 
 // array of metas should have same types
 exports.getCleanObject = (object, ...metas) => {
-  let returnObject = {};
+  const returnObject = {};
   let fields = metas.map((meta) => meta.fields);
   fields = fields.flat();
   if (metas[0].type === SelectType.select) {

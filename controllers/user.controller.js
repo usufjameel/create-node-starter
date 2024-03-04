@@ -1,18 +1,19 @@
-const userdb = require("../database/user.db");
-const { status, systemUser } = require("../constants");
-const { message } = require("../constants/messages.constants");
-const { responseStructure: rs } = require("../helpers/response.helper");
-const { updateFilters, FiltersMeta } = require("../helpers/filter.helpers");
-const { getSelectString, SelectMeta } = require("../helpers/dbselect.helper");
-const { getCleanObject, getPayload } = require("../helpers/index.helper");
-const { jwt_key } = require("../config/env.config");
-const jwt = require("jsonwebtoken");
+const userdb = require('../database/user.db');
+const { status } = require('../constants');
+const { message } = require('../constants/messages.constants');
+const { responseStructure: rs } = require('../helpers/response.helper');
+const { updateFilters, FiltersMeta } = require('../helpers/filter.helpers');
+const { getSelectString, SelectMeta } = require('../helpers/dbselect.helper');
+const { getCleanObject, getPayload } = require('../helpers/index.helper');
+// eslint-disable-next-line camelcase
+const { jwt_key } = require('../config/env.config');
+const jwt = require('jsonwebtoken');
 const {
   isRequestBodyForAddRecordValid,
   isRequestBodyForUpdateRecordValid,
   getObjectWithValidFields,
-} = require("../helpers/validation.helper");
-const { UserSchema } = require("../models/user.model");
+} = require('../helpers/validation.helper');
+const { UserSchema } = require('../models/user.model');
 
 /**
  * @swagger
@@ -214,7 +215,7 @@ exports.addUser = async (req, res) => {
 
 // get all users
 exports.getUsers = (req, res) => {
-  let queryParams = req.query;
+  const queryParams = req.query;
   updateFilters(queryParams, FiltersMeta.users);
   const selectString = getSelectString(SelectMeta.default, SelectMeta.users);
   userdb
@@ -272,7 +273,7 @@ exports.getUsers = (req, res) => {
 
 // Get single user data
 exports.singleUser = (req, res) => {
-  let userId = req.params.id;
+  const userId = req.params.id;
 
   if (!userId) {
     return res
@@ -343,7 +344,7 @@ exports.singleUser = (req, res) => {
 
 // delete user
 exports.deleteUser = (req, res) => {
-  let userId = req.params.id;
+  const userId = req.params.id;
   if (!userId) {
     return res
       .status(status.badRequest)
@@ -417,7 +418,7 @@ exports.updateUser = async (req, res) => {
   const userId = jsonData._id;
   const { isValid, validFields } = isRequestBodyForUpdateRecordValid(
     jsonData,
-    UserSchema.schema
+    UserSchema.schema,
   );
 
   if (!isValid) {
@@ -492,7 +493,7 @@ exports.login = async (req, res) => {
       .send(rs(status.unauthorized, message.unauthorized));
   }
   try {
-    const users = await userdb.getUsers({ email: email }, { lean: true });
+    const users = await userdb.getUsers({ email }, { lean: true });
     if (users.length > 0) {
       const user = users[0];
       if (user.password === password) {
@@ -500,28 +501,28 @@ exports.login = async (req, res) => {
           getCleanObject(user, SelectMeta.default, SelectMeta.users),
           jwt_key,
           {
-            expiresIn: "24hr",
-          }
+            expiresIn: '24hr',
+          },
         );
 
         const refreshToken = jwt.sign(
           getCleanObject(user, SelectMeta.default, SelectMeta.users),
           jwt_key,
           {
-            expiresIn: "7d",
-          }
+            expiresIn: '7d',
+          },
         );
 
         res.status(status.success).send(
-          rs(status.success, "User authenticated", {
+          rs(status.success, 'User authenticated', {
             accessToken,
             refreshToken,
-          })
+          }),
         );
       } else {
         res
           .status(status.unauthorized)
-          .send(rs(status.unauthorized, "User not authenticated"));
+          .send(rs(status.unauthorized, 'User not authenticated'));
       }
     } else {
       res.status(status.success).send(rs(status.noRecords, message.noRecords));
@@ -571,9 +572,9 @@ exports.login = async (req, res) => {
 
 // Login user
 exports.refreshToken = async (req, res) => {
-  const tokenString = req.get("Authorization");
+  const tokenString = req.get('Authorization');
   try {
-    const parts = tokenString.split(" ");
+    const parts = tokenString.split(' ');
     const token = parts[1];
     if (!token) {
       return res
@@ -581,22 +582,22 @@ exports.refreshToken = async (req, res) => {
         .send(rs(status.unauthorized, message.unauthorized));
     }
 
-    let user = jwt.verify(token, jwt_key);
+    const user = jwt.verify(token, jwt_key);
     delete user.iat;
     delete user.exp;
     const accessToken = jwt.sign(user, jwt_key, {
-      expiresIn: "24hr",
+      expiresIn: '24hr',
     });
 
     const refreshToken = jwt.sign(user, jwt_key, {
-      expiresIn: "7d",
+      expiresIn: '7d',
     });
 
     res.status(status.success).send(
-      rs(status.success, "User authenticated", {
+      rs(status.success, 'User authenticated', {
         accessToken,
         refreshToken,
-      })
+      }),
     );
   } catch (error) {
     res

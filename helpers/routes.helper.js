@@ -1,6 +1,6 @@
-const fs = require("fs");
-const path = require("path");
-const { routerEndsWith, routerHandler } = require("../config/router.config");
+const fs = require('fs');
+const path = require('path');
+const { routerEndsWith, routerHandler } = require('../config/router.config');
 
 function findJsFiles(dirPath) {
   const files = fs.readdirSync(dirPath);
@@ -25,7 +25,7 @@ exports.getRoutesArray = (dirPath) => {
     const exportsArray = importAllFiles(files);
     return exportsArray.flat(1);
   } catch (error) {
-    console.error("Failed to read module exports:", error);
+    console.error('Failed to read module exports:', error);
     return [];
   }
 };

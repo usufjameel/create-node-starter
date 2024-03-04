@@ -1,5 +1,5 @@
-const { RecordStatus } = require("../constants");
-const { UserSchema } = require("../models/user.model");
+const { RecordStatus } = require('../constants');
+const { UserSchema } = require('../models/user.model');
 
 // Add user
 exports.addUser = (userData, actionBy) => {
@@ -53,18 +53,17 @@ exports.deleteUser = (userId) => {
 
 // update user
 exports.updateUser = (userId, userData, actionBy) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let params = {
-        ...userData,
-        updatedBy: actionBy,
-        updatedAt: new Date(),
-      };
-      await UserSchema.findOneAndUpdate({ _id: userId }, params);
-      resolve();
-    } catch (error) {
-      console.error(error);
-      reject(error);
-    }
+  return new Promise((resolve, reject) => {
+    const params = {
+      ...userData,
+      updatedBy: actionBy,
+      updatedAt: new Date(),
+    };
+    UserSchema.findOneAndUpdate({ _id: userId }, params)
+      .then(() => resolve())
+      .catch((error) => {
+        console.log(error);
+        reject(error);
+      });
   });
 };
