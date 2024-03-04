@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const { RecordStatus } = require("../constants");
+const mongoose = require('mongoose');
+const { RecordStatus } = require('../constants');
 
 exports.BaseSchema = new mongoose.Schema({
   createdBy: { type: String, required: true },

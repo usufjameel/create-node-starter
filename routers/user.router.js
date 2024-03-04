@@ -1,8 +1,8 @@
-const { RequestMethod } = require("../constants");
-const controller = require("../controllers/user.controller");
-const { Endpoints } = require("../constants/endpoints.constants");
-const { verifyToken } = require("../middlewares/auth.middleware");
-const { authAdmin } = require("../middlewares/admin.middleware");
+const { RequestMethod } = require('../constants');
+const controller = require('../controllers/user.controller');
+const { Endpoints } = require('../constants/endpoints.constants');
+const { verifyToken } = require('../middlewares/auth.middleware');
+const { authAdmin } = require('../middlewares/admin.middleware');
 
 exports.routes = [
   {
@@ -17,12 +17,12 @@ exports.routes = [
   },
   {
     method: RequestMethod.get,
-    endpoint: Endpoints.users + "/:id",
+    endpoint: Endpoints.users + '/:id',
     handlers: [verifyToken, controller.singleUser],
   },
   {
     method: RequestMethod.delete,
-    endpoint: Endpoints.users + "/:id",
+    endpoint: Endpoints.users + '/:id',
     handlers: [controller.deleteUser],
   },
   {

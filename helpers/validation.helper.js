@@ -1,4 +1,4 @@
-const { BaseSchema } = require("../models/base.model");
+const { BaseSchema } = require('../models/base.model');
 
 exports.getRequiredFieldsInModel = (schema) => {
   const baseModelPaths = Object.keys(BaseSchema.paths);
@@ -16,7 +16,7 @@ exports.getValidFieldsInModel = (requestBody, schema) => {
   const modelFields = Object.keys(schema.paths);
   const baseModelFields = Object.keys(BaseSchema.paths);
   const fields = modelFields.filter((item) => !baseModelFields.includes(item));
-  fields.splice(fields.indexOf("__v"), 1);
+  fields.splice(fields.indexOf('__v'), 1);
   const requestBodyFields = Object.keys(requestBody);
 
   return requestBodyFields.filter((item) => fields.includes(item));
@@ -25,12 +25,12 @@ exports.getValidFieldsInModel = (requestBody, schema) => {
 exports.isRequestBodyForAddRecordValid = (requestBody, schema) => {
   const requiredFields = this.getRequiredFieldsInModel(schema);
   let isValid = true;
-  let missingFields = [];
+  const missingFields = [];
   requiredFields.forEach((field) => {
     if (
       requestBody[field] === undefined ||
       requestBody[field] === null ||
-      requestBody[field] === ""
+      requestBody[field] === ''
     ) {
       isValid = false;
       missingFields.push(field);
@@ -43,10 +43,10 @@ exports.isRequestBodyForAddRecordValid = (requestBody, schema) => {
 
 exports.isRequestBodyForUpdateRecordValid = (requestBody, schema) => {
   const validFields = this.getValidFieldsInModel(requestBody, schema);
-  if (!validFields.includes("_id")) {
-    validFields.push("_id");
+  if (!validFields.includes('_id')) {
+    validFields.push('_id');
   }
-  const isValid = validFields.length > 1 && validFields.includes("_id");
+  const isValid = validFields.length > 1 && validFields.includes('_id');
   return {
     isValid,
     validFields,
@@ -56,8 +56,8 @@ exports.isRequestBodyForUpdateRecordValid = (requestBody, schema) => {
 exports.getObjectWithValidFields = (requestBody, validFields) => {
   const returnObject = {};
 
-  if (validFields.includes("_id")) {
-    validFields.splice(validFields.indexOf("_id"), 1);
+  if (validFields.includes('_id')) {
+    validFields.splice(validFields.indexOf('_id'), 1);
   }
 
   validFields.forEach((field) => {

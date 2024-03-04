@@ -1,8 +1,8 @@
-const { RecordStatus } = require("../constants");
+const { RecordStatus } = require('../constants');
 
 exports.updateFilters = (filters, filtersMeta) => {
   if (filters.status) {
-    if (filters.status != RecordStatus.all) {
+    if (filters.status !== RecordStatus.all) {
       filters.recStatus = filters.status;
     }
     delete filters.status;
@@ -21,8 +21,8 @@ exports.updateFilters = (filters, filtersMeta) => {
 exports.FiltersMeta = {
   users: [
     {
-      queryKey: "type",
-      dbKey: "userType",
+      queryKey: 'type',
+      dbKey: 'userType',
     },
   ],
 };
