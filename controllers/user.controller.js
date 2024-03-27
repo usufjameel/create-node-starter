@@ -1,13 +1,12 @@
-const userdb = require('../database/user.db');
-const { status } = require('../constants');
-const { message } = require('../constants/messages.constants');
-const { responseStructure: rs } = require('../helpers/response.helper');
-const { updateFilters, FiltersMeta } = require('../helpers/filter.helpers');
-const { getSelectString, SelectMeta } = require('../helpers/dbselect.helper');
-const { getCleanObject, getPayload } = require('../helpers/index.helper');
-// eslint-disable-next-line camelcase
-const { jwt_key } = require('../config/env.config');
-const jwt = require('jsonwebtoken');
+const userService = require("../services/user.service");
+const { status, systemUser } = require("../constants");
+const { message } = require("../constants/messages.constants");
+const { responseStructure: rs } = require("../helpers/response.helper");
+const { updateFilters, FiltersMeta } = require("../helpers/filter.helpers");
+const { getSelectString, SelectMeta } = require("../helpers/dbselect.helper");
+const { getCleanObject, getPayload } = require("../helpers/index.helper");
+const { jwt_key } = require("../config/env.config");
+const jwt = require("jsonwebtoken");
 const {
   isRequestBodyForAddRecordValid,
   isRequestBodyForUpdateRecordValid,
@@ -157,7 +156,7 @@ exports.addUser = async (req, res) => {
   }
 
   const validObject = getObjectWithValidFields(jsonData, validFields);
-  userdb
+  userService
     .addUser(validObject, jsonData.email)
     .then((response) => {
       res
@@ -218,7 +217,7 @@ exports.getUsers = (req, res) => {
   const queryParams = req.query;
   updateFilters(queryParams, FiltersMeta.users);
   const selectString = getSelectString(SelectMeta.default, SelectMeta.users);
-  userdb
+  userService
     .getUsers(queryParams, { select: selectString })
     .then((users) => {
       res
@@ -272,8 +271,8 @@ exports.getUsers = (req, res) => {
  */
 
 // Get single user data
-exports.singleUser = (req, res) => {
-  const userId = req.params.id;
+exports.getUser = (req, res) => {
+  let userId = req.params.id;
 
   if (!userId) {
     return res
@@ -282,7 +281,7 @@ exports.singleUser = (req, res) => {
   }
 
   const selectString = getSelectString(SelectMeta.default, SelectMeta.users);
-  userdb
+  userService
     .getUsers({ _id: userId }, { select: selectString })
     .then((users) => {
       if (users.length > 0) {
@@ -350,7 +349,7 @@ exports.deleteUser = (req, res) => {
       .status(status.badRequest)
       .send(rs(status.badRequest, message.noUniqueId));
   }
-  userdb
+  userService
     .deleteUser(userId)
     .then((response) => {
       res
@@ -429,7 +428,7 @@ exports.updateUser = async (req, res) => {
 
   const validObject = getObjectWithValidFields(jsonData, validFields);
 
-  userdb
+  userService
     .updateUser(userId, validObject, decoded.email)
     .then((response) => {
       res.status(status.success).send(rs(status.success, message.userUpdate));
@@ -493,7 +492,7 @@ exports.login = async (req, res) => {
       .send(rs(status.unauthorized, message.unauthorized));
   }
   try {
-    const users = await userdb.getUsers({ email }, { lean: true });
+    const users = await userService.getUsers({ email: email }, { lean: true });
     if (users.length > 0) {
       const user = users[0];
       if (user.password === password) {

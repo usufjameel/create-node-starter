@@ -17,8 +17,8 @@ exports.routes = [
   },
   {
     method: RequestMethod.get,
-    endpoint: Endpoints.users + '/:id',
-    handlers: [verifyToken, controller.singleUser],
+    endpoint: Endpoints.users + "/:id",
+    handlers: [verifyToken, controller.getUser],
   },
   {
     method: RequestMethod.delete,

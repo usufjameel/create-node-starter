@@ -18,7 +18,6 @@ exports.getCleanObject = (object, ...metas) => {
       }
     });
   }
-  console.log(returnObject);
   return returnObject;
 };
 
